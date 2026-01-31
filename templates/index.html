@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StegoVault - Browser Steganography</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>StegoVault</h1>
+            <p>Securely hide encrypted data inside images.</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('encrypt')">Hide Data (Encrypt)</button>
+            <button class="tab-btn" onclick="switchTab('decrypt')">Extract Data (Decrypt)</button>
+        </div>
+
+        <div id="encrypt-section" class="section active">
+            <form id="encrypt-form">
+                <div class="form-group">
+                    <label>1. Select Cover Image (PNG/JPG)</label>
+                    <div class="file-drop-area" id="encrypt-drop-area">
+                        <span class="fake-btn">Choose Image</span>
+                        <span class="file-msg">or drag and drop here</span>
+                        <input class="file-input" type="file" name="image" accept="image/png, image/jpeg" required onchange="updateFileName(this)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Select Secret Data</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-btn active" onclick="toggleSecretInput('text')">Text</button>
+                        <button type="button" class="toggle-btn" onclick="toggleSecretInput('file')">File</button>
+                    </div>
+                    
+                    <div id="secret-text-input">
+                        <textarea name="secret_text" placeholder="Enter your secret message here..."></textarea>
+                    </div>
+                    <div id="secret-file-input" style="display: none;">
+                        <input type="file" name="secret_file">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Set Encryption Password</label>
+                    <input type="password" name="password" placeholder="Strong password (required)" required>
+                </div>
+
+                <button type="submit" class="action-btn">Encrypt & Download Image</button>
+                <div id="encrypt-status" class="status-msg"></div>
+            </form>
+        </div>
+
+        <div id="decrypt-section" class="section">
+            <form id="decrypt-form">
+                <div class="form-group">
+                    <label>1. Select Stego Image</label>
+                    <div class="file-drop-area" id="decrypt-drop-area">
+                        <span class="fake-btn">Choose Image</span>
+                        <span class="file-msg">or drag and drop here</span>
+                        <input class="file-input" type="file" name="image" accept="image/png" required onchange="updateFileName(this)">
+                    </div>
+                    <p class="small-hint">Must be the PNG file downloaded from this tool.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Enter Decryption Password</label>
+                    <input type="password" name="password" placeholder="Password used for encryption" required>
+                </div>
+
+                <button type="submit" class="action-btn secondary">Extract & Decrypt</button>
+                <div id="decrypt-status" class="status-msg"></div>
+            </form>
+        </div>
+        
+        <footer>
+            <p><strong>Note:</strong> Data is encrypted with AES-256-GCM. Do not lose your password.</p>
+            <p>Images compressed by social media (WhatsApp, Twitter, etc.) will lose the hidden data.</p>
+        </footer>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
